@@ -1,4 +1,4 @@
-import apiClient from '../utils/apiClient';
+import apiClient from './api';
 
 export interface ProcessDrawingRequest {
   image: string; // base64 encoded image

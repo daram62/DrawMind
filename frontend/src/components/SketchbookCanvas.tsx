@@ -3,14 +3,33 @@ import { useRef, useState, useEffect } from 'react';
 interface SketchbookCanvasProps {
   onDrawingComplete?: (imageData: string) => void;
   scenario?: string;
+  stageTitle?: string;
 }
 
-export const SketchbookCanvas = ({ onDrawingComplete, scenario }: SketchbookCanvasProps) => {
+export const SketchbookCanvas = ({ onDrawingComplete, scenario, stageTitle }: SketchbookCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [brushSize, setBrushSize] = useState(3);
+  const [brushSize] = useState(8);
   const [brushColor, setBrushColor] = useState('#2c3e50');
   const [tool, setTool] = useState<'pen' | 'eraser'>('pen');
+  const [canvasSize, setCanvasSize] = useState(450);
+
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.offsetWidth;
+        // 화면 높이 고려해서 스케치북 크기 결정
+        const maxHeight = window.innerHeight - 320; // 상단 제목, 하단 대화창 제외
+        const size = Math.min(Math.floor(containerWidth * 0.7 * 0.8), maxHeight, 480);
+        setCanvasSize(size);
+      }
+    };
+
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+    return () => window.removeEventListener('resize', updateCanvasSize);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,35 +41,49 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario }: SketchbookCanv
     // 스케치북 배경 설정
     ctx.fillStyle = '#fffef9';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }, []);
+  }, [canvasSize]);
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    setIsDrawing(true);
+  const getCoordinates = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) return { x: 0, y: 0 };
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
 
-    const ctx = canvas.getContext('2d');
+    let clientX, clientY;
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  };
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    setIsDrawing(true);
+    const { x, y } = getCoordinates(e);
+
+    const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
 
     ctx.beginPath();
     ctx.moveTo(x, y);
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
     if (!isDrawing) return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const ctx = canvas.getContext('2d');
+    const { x, y } = getCoordinates(e);
+    const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
 
     ctx.lineTo(x, y);
@@ -84,134 +117,140 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario }: SketchbookCanv
     onDrawingComplete?.(imageData);
   };
 
+  // 심리치료에 적합한 따뜻한 색상들
   const colors = [
-    '#2c3e50', '#e74c3c', '#3498db', '#2ecc71', 
-    '#f39c12', '#9b59b6', '#1abc9c', '#34495e'
+    '#2c3e50', // 검정 (기본)
+    '#e74c3c', // 따뜻한 빨강
+    '#f39c12', // 주황
+    '#2ecc71', // 초록
+    '#3498db', // 파랑
   ];
 
   return (
-    <div className="space-y-4">
-      {/* 시나리오 안내 */}
+    <div className="w-full h-full flex flex-col" ref={containerRef}>
+      {/* 상단: 단계 표시 */}
+      <div className="px-6 py-4">
+        <h2 className="font-sketch text-2xl text-white drop-shadow-lg">
+          {stageTitle || '첫 번째 이야기 : 새의 섬'}
+        </h2>
+      </div>
+
+      {/* 중앙: 스케치북 */}
+      <div className="flex-1 flex items-center justify-center px-4 pb-8">
+        <div className="relative w-full max-w-3xl">
+          {/* 스케치북 */}
+          <div className="relative backdrop-blur-sm p-5 rounded-lg shadow-2xl" style={{ backgroundColor: 'rgba(250, 251, 255, 0.9)' }}>
+            <div className="flex gap-5">
+              {/* 왼쪽: 캔버스 - 1:1 비율, 70% 너비 */}
+              <div className="flex-shrink-0" style={{ width: '70%' }}>
+                <div className="relative w-full" style={{ aspectRatio: '1/1' }}>
+                  <canvas
+                    ref={canvasRef}
+                    width={canvasSize}
+                    height={canvasSize}
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={stopDrawing}
+                    onMouseLeave={stopDrawing}
+                    onTouchStart={startDrawing}
+                    onTouchMove={draw}
+                    onTouchEnd={stopDrawing}
+                    className="w-full h-full border-2 border-dashed border-gray-300 rounded touch-none"
+                    style={{
+                      background: '#fffef9',
+                      boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.05)',
+                      cursor: tool === 'pen' ? "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><text y=\"20\" font-size=\"20\">✏️</text></svg>') 2 20, auto" : "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><text y=\"20\" font-size=\"20\">🧹</text></svg>') 12 12, auto"
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* 오른쪽: 도구 모음, 30% 너비 */}
+              <div className="flex-1 flex flex-col justify-center space-y-6 px-2">
+                {/* 도구 선택 */}
+                <div>
+                  <h4 className="font-hand text-sm text-gray-600 mb-2">도구</h4>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => setTool('pen')}
+                      className={`px-4 py-2.5 rounded-lg font-hand text-sm transition-all ${tool === 'pen'
+                        ? 'bg-indigo-800 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                      연필
+                    </button>
+                    <button
+                      onClick={() => setTool('eraser')}
+                      className={`px-4 py-2.5 rounded-lg font-hand text-sm transition-all ${tool === 'eraser'
+                        ? 'bg-indigo-800 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                      지우개
+                    </button>
+                  </div>
+                </div>
+
+                {/* 색상 선택 */}
+                <div>
+                  <h4 className="font-hand text-sm text-gray-600 mb-2">색상</h4>
+                  <div className="flex flex-col gap-2">
+                    {colors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setBrushColor(color)}
+                        className={`w-full h-11 rounded-lg transition-all hover:scale-105 border-2 ${brushColor === color
+                          ? 'ring-3 ring-indigo-700 scale-105 border-indigo-700'
+                          : 'border-gray-300'
+                          }`}
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* 액션 버튼 */}
+                <div className="flex flex-col gap-2 pt-4">
+                  <button
+                    onClick={clearCanvas}
+                    className="w-full px-4 py-2.5 rounded-lg bg-gray-100 text-gray-700 font-hand text-sm hover:bg-gray-200 transition-all"
+                  >
+                    지우기
+                  </button>
+                  <button
+                    onClick={saveDrawing}
+                    className="w-full sketch-button text-xs px-3 py-2"
+                  >
+                    완성
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 하단: 프롤로그 스타일 투명 말풍선 */}
       {scenario && (
-        <div className="storybook-card bg-storybook-sky/30 border-dream-300">
-          <div className="flex items-start gap-3">
-            <span className="text-3xl">📖</span>
-            <div>
-              <h3 className="font-storybook text-xl text-dream-700 mb-2">
-                오늘의 이야기
-              </h3>
-              <p className="font-fairy text-lg text-gray-700">
+        <div className="flex-shrink-0 px-4 pb-8">
+          <div className="max-w-3xl mx-auto">
+            {/* 말풍선 */}
+            <div className="relative bg-white/30 backdrop-blur-md rounded-2xl shadow-2xl border-2 border-white/40 p-4 sm:p-6">
+              {/* 말풍선 꼬리 */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[20px] border-b-white/40"></div>
+              
+              {/* 대화 텍스트 */}
+              <p 
+                className="text-base sm:text-lg text-white leading-relaxed text-center whitespace-pre-line font-bold drop-shadow-lg"
+                style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}
+              >
                 {scenario}
               </p>
             </div>
           </div>
         </div>
       )}
-
-      {/* 스케치북 캔버스 */}
-      <div className="relative">
-        {/* 스케치북 테두리 효과 */}
-        <div className="absolute -inset-4 bg-gradient-to-br from-amber-200 via-orange-100 to-amber-200 rounded-lg shadow-2xl"></div>
-        
-        <div className="relative bg-white p-6 rounded-lg shadow-inner">
-          {/* 스케치북 구멍 장식 */}
-          <div className="absolute left-2 top-0 bottom-0 flex flex-col justify-around py-8">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="w-3 h-3 rounded-full bg-gray-300 shadow-inner"></div>
-            ))}
-          </div>
-
-          {/* 캔버스 */}
-          <canvas
-            ref={canvasRef}
-            width={800}
-            height={600}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={stopDrawing}
-            onMouseLeave={stopDrawing}
-            className="border-2 border-dashed border-gray-300 rounded cursor-crosshair ml-6"
-            style={{ 
-              background: '#fffef9',
-              boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.05)'
-            }}
-          />
-        </div>
-      </div>
-
-      {/* 도구 모음 */}
-      <div className="storybook-card">
-        <div className="flex flex-wrap items-center gap-4">
-          {/* 도구 선택 */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => setTool('pen')}
-              className={`px-4 py-2 rounded-full font-fairy transition-all ${
-                tool === 'pen'
-                  ? 'bg-fairy-400 text-white shadow-lg scale-110'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              ✏️ 펜
-            </button>
-            <button
-              onClick={() => setTool('eraser')}
-              className={`px-4 py-2 rounded-full font-fairy transition-all ${
-                tool === 'eraser'
-                  ? 'bg-fairy-400 text-white shadow-lg scale-110'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              🧹 지우개
-            </button>
-          </div>
-
-          {/* 색상 선택 */}
-          <div className="flex gap-2 items-center">
-            <span className="font-fairy text-gray-700">색상:</span>
-            {colors.map((color) => (
-              <button
-                key={color}
-                onClick={() => setBrushColor(color)}
-                className={`w-8 h-8 rounded-full transition-all hover:scale-110 ${
-                  brushColor === color ? 'ring-4 ring-fairy-300 scale-110' : ''
-                }`}
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-
-          {/* 브러시 크기 */}
-          <div className="flex gap-2 items-center">
-            <span className="font-fairy text-gray-700">굵기:</span>
-            <input
-              type="range"
-              min="1"
-              max="20"
-              value={brushSize}
-              onChange={(e) => setBrushSize(Number(e.target.value))}
-              className="w-24"
-            />
-            <span className="font-fairy text-gray-700 w-8">{brushSize}</span>
-          </div>
-
-          {/* 액션 버튼 */}
-          <div className="flex gap-2 ml-auto">
-            <button
-              onClick={clearCanvas}
-              className="px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-fairy hover:bg-gray-300 transition-all"
-            >
-              🗑️ 지우기
-            </button>
-            <button
-              onClick={saveDrawing}
-              className="storybook-button bg-gradient-to-r from-fairy-400 to-dream-400"
-            >
-              ✨ 완성!
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

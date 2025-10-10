@@ -1,4 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Indie+Flower&display=swap');
+@font-face {
+  font-family: 'SejongGeulggot';
+  src: url('/SejongGeulggot.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cafe24Oneprettynight';
+  src: url('/Cafe24Oneprettynight-v2.0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
@@ -6,94 +18,50 @@
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-storybook-cream via-storybook-lavender/20 to-storybook-sky/30;
     margin: 0;
-    font-family: 'Patrick Hand', 'Indie Flower', cursive;
+    font-family: 'SejongGeulggot', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    background-attachment: fixed;
+    background-color: #fffef9;
   }
 }
 
 @layer components {
-  /* 동화책 카드 스타일 */
-  .storybook-card {
-    @apply bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-storybook 
-           border-4 border-storybook-peach/30 
-           hover:shadow-dreamy hover:scale-105 
-           transition-all duration-300 ease-out
-           relative overflow-hidden;
-  }
-  
-  .storybook-card::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-storybook-lavender/10 via-transparent to-storybook-mint/10 pointer-events-none;
-  }
-
-  /* 동화책 버튼 */
-  .storybook-button {
-    @apply px-6 py-3 rounded-full font-storybook text-lg
-           bg-gradient-to-r from-fairy-400 to-dream-400
-           text-white shadow-lg
-           hover:shadow-xl hover:scale-110
-           active:scale-95
+  /* 스케치북 카드 */
+  .sketch-card {
+    @apply bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-sketch
+           border-2 border-sketch-brown/20
+           hover:shadow-paper hover:-translate-y-0.5
            transition-all duration-300
-           border-2 border-white/50;
+           relative;
   }
 
-  /* 제목 스타일 */
-  .storybook-title {
-    @apply font-storybook text-4xl md:text-6xl 
-           bg-gradient-to-r from-fairy-600 via-dream-500 to-fairy-600 
-           bg-clip-text text-transparent
-           drop-shadow-lg;
+  /* 손글씨 버튼 */
+  .sketch-button {
+    @apply px-6 py-2.5 rounded-full font-hand text-base sm:text-lg
+           bg-sketch-orange text-white shadow-sketch
+           hover:bg-sketch-coral hover:shadow-paper hover:scale-105
+           active:scale-95
+           transition-all duration-200
+           border-2 border-sketch-brown/20;
   }
 
   /* 입력 필드 */
-  .storybook-input {
-    @apply px-4 py-3 rounded-2xl 
-           bg-white/80 backdrop-blur-sm
-           border-3 border-storybook-lavender/40
-           focus:border-fairy-400 focus:ring-4 focus:ring-fairy-200
-           transition-all duration-300
-           font-fairy text-lg;
-  }
-
-  /* 플로팅 장식 요소 */
-  .floating-decoration {
-    @apply absolute pointer-events-none opacity-30 animate-float;
+  .sketch-input {
+    @apply px-3 py-2 sm:px-4 sm:py-3 rounded-xl
+           bg-white
+           border-2 border-sketch-brown/30
+           focus:border-sketch-orange focus:ring-2 focus:ring-sketch-orange/20
+           transition-all duration-200
+           font-hand text-base sm:text-lg;
   }
 }
 
 @layer utilities {
-  /* 수채화 효과 */
-  .watercolor-bg {
-    background: linear-gradient(135deg, 
-      rgba(255, 182, 193, 0.3) 0%, 
-      rgba(221, 160, 221, 0.3) 25%,
-      rgba(173, 216, 230, 0.3) 50%,
-      rgba(255, 218, 185, 0.3) 75%,
-      rgba(255, 182, 193, 0.3) 100%);
-    background-size: 400% 400%;
-    animation: watercolor 15s ease infinite;
-  }
-
-  @keyframes watercolor {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
   /* 종이 질감 */
-  .paper-texture {
-    background-image: 
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.03) 0px,
-        transparent 1px,
-        transparent 2px,
-        rgba(0, 0, 0, 0.03) 3px
-      );
+  .paper-bg {
+    background-color: #fffef9;
   }
 }
 

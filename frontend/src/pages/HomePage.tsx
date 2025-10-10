@@ -1,80 +1,63 @@
-import { StorybookPage, StorybookBorder } from '../components/StorybookDecorations';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
   return (
-    <StorybookPage>
-      <div className="container mx-auto px-4 py-12 space-y-8">
-        {/* 메인 타이틀 */}
-        <div className="text-center mb-12 animate-float">
-          <h1 className="storybook-title mb-6">
-            ✨ 마법의 해커톤 세계에 오신 것을 환영합니다 ✨
-          </h1>
-          <p className="font-fairy text-2xl text-fairy-700">
-            당신의 꿈을 현실로 만드는 여정이 시작됩니다
+    <div className="container mx-auto px-4 py-6 md:py-10 max-w-3xl">
+      {/* 메인 타이틀 */}
+      <div className="text-center mb-8 md:mb-10">
+        <h1 className="font-sketch text-3xl sm:text-4xl md:text-5xl text-sketch-brown mb-3">
+          나만의 이야기를 그려보세요
+        </h1>
+      </div>
+
+      {/* 편지지 스타일 설명 */}
+      <div className="bg-white rounded-lg shadow-sketch border-2 border-sketch-brown/20 p-6 sm:p-8 mb-8 relative">
+        {/* 편지지 줄무늬 */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div className="h-full" style={{
+            backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, rgba(139, 115, 85, 0.15) 31px, rgba(139, 115, 85, 0.15) 32px)',
+          }}></div>
+        </div>
+
+        <div className="relative space-y-6 text-sketch-brown/90 font-bold" style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}>
+          <p className="text-base sm:text-lg leading-relaxed">
+            안녕하세요!
+          </p>
+
+          <p className="text-base sm:text-lg leading-relaxed">
+            이곳은 당신의 상상력이 이야기가 되는 특별한 공간입니다.
+          </p>
+
+          <p className="text-base sm:text-lg leading-relaxed">
+            먼저, 스케치북에 자유롭게 그림을 그려보세요.<br />
+            무엇을 그려도 좋아요. 당신의 상상력을 마음껏 펼쳐보세요.
+          </p>
+
+          <p className="text-base sm:text-lg leading-relaxed">
+            그림을 완성하면, AI가 당신의 그림을 분석하고<br />
+            멋진 이야기를 만들어드립니다.
+          </p>
+
+          <p className="text-base sm:text-lg leading-relaxed">
+            당신만의 특별한 이야기가 완성됩니다!<br />
+            저장하고 친구들과 공유해보세요.
+          </p>
+
+          <p className="text-base sm:text-lg leading-relaxed text-right">
+            그럼, 시작해볼까요?
           </p>
         </div>
-
-        {/* 기능 카드들 */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <StorybookBorder>
-            <div className="storybook-card group">
-              <div className="text-5xl mb-4 group-hover:animate-wiggle">⚛️</div>
-              <h3 className="font-storybook text-3xl text-fairy-600 mb-3">
-                React 마법
-              </h3>
-              <p className="font-fairy text-lg text-gray-700">
-                Vite와 TypeScript로 만드는 빠르고 안전한 마법의 주문들
-              </p>
-            </div>
-          </StorybookBorder>
-
-          <StorybookBorder>
-            <div className="storybook-card group">
-              <div className="text-5xl mb-4 group-hover:animate-wiggle">🎨</div>
-              <h3 className="font-storybook text-3xl text-dream-600 mb-3">
-                Tailwind 물감
-              </h3>
-              <p className="font-fairy text-lg text-gray-700">
-                아름다운 색상과 스타일로 그려내는 당신만의 이야기
-              </p>
-            </div>
-          </StorybookBorder>
-
-          <StorybookBorder>
-            <div className="storybook-card group">
-              <div className="text-5xl mb-4 group-hover:animate-wiggle">🗺️</div>
-              <h3 className="font-storybook text-3xl text-fairy-600 mb-3">
-                Router 나침반
-              </h3>
-              <p className="font-fairy text-lg text-gray-700">
-                페이지 사이를 자유롭게 여행하는 마법의 나침반
-              </p>
-            </div>
-          </StorybookBorder>
-
-          <StorybookBorder>
-            <div className="storybook-card group">
-              <div className="text-5xl mb-4 group-hover:animate-wiggle">🔮</div>
-              <h3 className="font-storybook text-3xl text-dream-600 mb-3">
-                API 수정구
-              </h3>
-              <p className="font-fairy text-lg text-gray-700">
-                데이터의 세계와 소통하는 신비로운 수정구
-              </p>
-            </div>
-          </StorybookBorder>
-        </div>
-
-        {/* CTA 버튼 */}
-        <div className="text-center mt-12">
-          <a href="/draw">
-            <button className="storybook-button animate-float-slow">
-              🚀 모험 시작하기
-            </button>
-          </a>
-        </div>
       </div>
-    </StorybookPage>
+
+      {/* CTA 버튼 */}
+      <div className="text-center">
+        <Link to="/draw">
+          <button className="sketch-button text-base sm:text-lg px-10 py-3">
+            그리기
+          </button>
+        </Link>
+      </div>
+    </div>
   );
 }
 
