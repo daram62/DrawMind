@@ -19,31 +19,31 @@ function HomePage() {
           }}></div>
         </div>
 
-        <div className="relative space-y-6 text-sketch-brown/90 font-bold" style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}>
-          <p className="text-base sm:text-lg leading-relaxed">
+        <div className="relative space-y-6 text-sketch-brown/90 font-bold" style={{ fontFamily: 'OnglipGyeongyeong, cursive' }}>
+          <p className="text-xl sm:text-2xl leading-relaxed">
             안녕하세요!
           </p>
 
-          <p className="text-base sm:text-lg leading-relaxed">
+          <p className="text-xl sm:text-2xl leading-relaxed">
             이곳은 당신의 상상력이 이야기가 되는 특별한 공간입니다.
           </p>
 
-          <p className="text-base sm:text-lg leading-relaxed">
+          <p className="text-xl sm:text-2xl leading-relaxed">
             먼저, 스케치북에 자유롭게 그림을 그려보세요.<br />
             무엇을 그려도 좋아요. 당신의 상상력을 마음껏 펼쳐보세요.
           </p>
 
-          <p className="text-base sm:text-lg leading-relaxed">
+          <p className="text-xl sm:text-2xl leading-relaxed">
             그림을 완성하면, AI가 당신의 그림을 분석하고<br />
             멋진 이야기를 만들어드립니다.
           </p>
 
-          <p className="text-base sm:text-lg leading-relaxed">
+          <p className="text-xl sm:text-2xl leading-relaxed">
             당신만의 특별한 이야기가 완성됩니다!<br />
             저장하고 친구들과 공유해보세요.
           </p>
 
-          <p className="text-base sm:text-lg leading-relaxed text-right">
+          <p className="text-xl sm:text-2xl leading-relaxed text-right">
             그럼, 시작해볼까요?
           </p>
         </div>
@@ -51,9 +51,9 @@ function HomePage() {
 
       {/* CTA 버튼 */}
       <div className="text-center">
-        <Link to="/draw">
+        <Link to="/start">
           <button className="sketch-button text-base sm:text-lg px-10 py-3">
-            그리기
+            시작하기
           </button>
         </Link>
       </div>

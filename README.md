@@ -1,248 +1,117 @@
-# Hackathon Infrastructure
+# 🎨 AI 그림 동화 프로젝트
 
-AI 해커톤을 위한 사전 구축된 인프라입니다. React 프론트엔드 + FastAPI 백엔드 + AWS 배포 환경이 준비되어 있습니다.
+아이들이 그린 그림을 AI가 분석하고 동화로 만들어주는 웹 애플리케이션입니다.
 
-## 🚀 주요 기능
+## 🚀 기술 스택
 
-### 프론트엔드
-- ⚡ **React 18 + Vite + TypeScript** - 빠른 개발 환경
-- 🎨 **Tailwind CSS** - 유틸리티 기반 스타일링
-- 🧩 **재사용 가능한 UI 컴포넌트** - Button, Input, Card, Modal, Toast 등
-- 🖼️ **이미지 처리 유틸리티** - 클라이언트 사이드 압축, Base64 변환
-- 🔄 **React Router** - SPA 라우팅
-
-### 백엔드
-- 🐍 **FastAPI + Python** - 빠르고 현대적인 API 프레임워크
-- 📚 **자동 API 문서** - Swagger UI 자동 생성
-- 🐳 **Docker** - 컨테이너화된 배포
-- ☁️ **AWS EC2** - 프로덕션 배포 완료
-
-### 배포된 API
-- **API URL**: http://13.125.237.117:8000
-- **API 문서**: http://13.125.237.117:8000/docs
-- **Health Check**: http://13.125.237.117:8000/health
-
-## 📋 기술 스택
-
-**Frontend:**
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-- Axios
-
-**Backend:**
-- Python 3.11
-- FastAPI
-- Uvicorn
-- Pydantic
-
-**Infrastructure:**
-- Docker
-- AWS EC2
-- AWS S3
-
-## 🛠️ 로컬 개발 환경 설정
-
-### 사전 요구사항
-- Node.js 18+ (프론트엔드)
-- Python 3.11+ (백엔드)
-- Docker (선택)
-
-### 1. 저장소 클론
-\`\`\`bash
-git clone <repository-url>
-cd hackathon-infrastructure
-\`\`\`
-
-### 2. 프론트엔드 실행
-
-\`\`\`bash
-cd frontend
-npm install
-npm run dev
-\`\`\`
-
-접속: http://localhost:5173
-
-### 3. 백엔드 실행 (Docker 추천)
-
-\`\`\`bash
-cd backend-fastapi
-docker build -t hackathon-api .
-docker run -p 8000:8000 hackathon-api
-\`\`\`
-
-접속: http://localhost:8000/docs
-
-## 🚀 배포된 서버
-
-- **API**: http://13.125.237.117:8000
-- **문서**: http://13.125.237.117:8000/docs
-- **상세 가이드**: `BACKEND_HANDOFF.md` 참고
+- **React 18** + TypeScript
+- **Vite** - 빠른 빌드 도구
+- **Tailwind CSS** - 스타일링
+- **React Router** - 페이지 라우팅
+- **HTML5 Canvas** - 그림 그리기
+- **Axios** - API 통신
 
 ## 📁 프로젝트 구조
 
-\`\`\`
-.
-├── frontend/                 # React 프론트엔드
-│   ├── src/
-│   │   ├── components/      # UI 컴포넌트
-│   │   ├── pages/           # 페이지 컴포넌트
-│   │   ├── services/        # API 클라이언트
-│   │   ├── utils/           # 유틸리티 함수
-│   │   └── hooks/           # 커스텀 훅
-│   └── package.json
-│
-├── backend/                  # Express 백엔드
-│   ├── src/
-│   │   ├── routes/          # API 라우트
-│   │   ├── services/        # 비즈니스 로직
-│   │   ├── middleware/      # 미들웨어
-│   │   ├── config/          # 설정
-│   │   └── server.ts        # 서버 엔트리포인트
-│   ├── prisma/              # Prisma 스키마
-│   └── package.json
-│
-├── scripts/                  # 배포 스크립트
-├── docker-compose.yml
-└── README.md
-\`\`\`
+```
+frontend/
+├── src/
+│   ├── components/          # UI 컴포넌트
+│   │   ├── Layout.tsx
+│   │   └── SketchbookCanvas.tsx
+│   ├── pages/               # 페이지
+│   │   ├── StartPage.tsx
+│   │   ├── HomePage.tsx
+│   │   ├── DrawingFlowPage.tsx
+│   │   └── EmotionAnalysisPage.tsx
+│   ├── services/            # API 클라이언트
+│   │   ├── api.ts
+│   │   └── drawingService.ts
+│   └── App.tsx
+├── public/
+│   └── fonts/               # 한글 폰트
+└── vercel.json              # Vercel 배포 설정
+```
 
-## 🔑 환경 변수
+## 🛠️ 로컬 개발
 
-### 백엔드 환경 변수
+### 설치 및 실행
 
-\`\`\`env
-# Server
-NODE_ENV=development
-PORT=3000
-ALLOWED_ORIGINS=http://localhost:5173
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-# Database
-DATABASE_URL=file:./dev.db
+접속: http://localhost:5173
 
-# AWS S3
-AWS_REGION=ap-northeast-2
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_S3_BUCKET=your-bucket-name
+### 빌드
 
-# AI Provider (선택)
-AI_PROVIDER=gemini
-GEMINI_API_KEY=your_api_key
-# OPENAI_API_KEY=your_api_key
-# ANTHROPIC_API_KEY=your_api_key
-\`\`\`
+```bash
+npm run build
+```
 
-### 프론트엔드 환경 변수
+## 🌐 배포
 
-\`\`\`env
-VITE_API_URL=http://localhost:3000
-\`\`\`
+### Backend API
+- **URL**: http://43.200.181.143:8001
+- **API 문서**: http://43.200.181.143:8001/docs
 
-## 🚢 배포
+### Frontend (Vercel)
 
-### 프론트엔드 배포 (S3 + CloudFront)
+1. https://vercel.com 접속 및 로그인
+2. "Add New Project" 클릭
+3. GitHub 저장소 선택
+4. 설정:
+   ```
+   Framework Preset: Vite
+   Root Directory: frontend
+   Build Command: npm run build
+   Output Directory: dist
+   ```
+5. 환경 변수 추가:
+   ```
+   VITE_API_BASE_URL=http://43.200.181.143:8001
+   ```
+6. Deploy!
 
-\`\`\`bash
-# 환경 변수 설정
-export AWS_S3_FRONTEND_BUCKET=your-frontend-bucket
-export AWS_CLOUDFRONT_DISTRIBUTION_ID=your-distribution-id
-export AWS_REGION=ap-northeast-2
+## 📦 주요 기능
 
-# 배포 실행
-./scripts/deploy-frontend.sh
-\`\`\`
+- ✏️ **그림 그리기** - HTML5 Canvas 기반 드로잉
+- 🎲 **시나리오 제공** - 창의적인 그림 주제
+- 📤 **이미지 업로드** - 그림을 백엔드로 전송
+- 📖 **스토리 생성** - 그림 기반 동화 생성
+- �  **PDF 다운로드** - 완성된 작품 저장
 
-### 백엔드 배포 (EC2 + Docker)
+## 🎯 API 엔드포인트
 
-\`\`\`bash
-# 환경 변수 설정
-export EC2_HOST=your-ec2-ip
-export EC2_USER=ubuntu
+```
+POST /api/drawings/process          # 그림 분석
+GET  /api/drawings/scenarios/random # 랜덤 시나리오
+GET  /api/drawings/scenarios        # 시나리오 목록
+POST /api/drawings/save             # 그림 저장
+GET  /api/drawings                  # 저장된 그림 목록
+```
 
-# 배포 실행
-./scripts/deploy-backend.sh
-\`\`\`
+## 🐛 트러블슈팅
 
-## 📚 API 사용 예제
-
-### 프로젝트 생성
-\`\`\`javascript
-import { projectService } from './services/projectService';
-
-const project = await projectService.create({
-  title: 'My Hackathon Project',
-  description: 'An awesome AI project',
-});
-\`\`\`
-
-### 파일 업로드
-\`\`\`javascript
-import { fileService } from './services/fileService';
-
-const file = await fileService.upload(imageFile, {
-  projectId: project.id,
-  onProgress: (progress) => console.log(`${progress}%`),
-});
-\`\`\`
-
-## 🎯 해커톤 당일 빠른 시작
-
-1. **저장소 클론 및 의존성 설치** (5분)
-   \`\`\`bash
-   git clone <repo> && cd hackathon-infrastructure
-   cd backend && npm install && cd ../frontend && npm install
-   \`\`\`
-
-2. **환경 변수 설정** (2분)
-   - AWS 자격증명 입력
-   - API 키 입력 (필요시)
-
-3. **데이터베이스 마이그레이션** (1분)
-   \`\`\`bash
-   cd backend && npx prisma migrate dev
-   \`\`\`
-
-4. **서버 실행** (1분)
-   \`\`\`bash
-   # 터미널 1
-   cd backend && npm run dev
-   
-   # 터미널 2
-   cd frontend && npm run dev
-   \`\`\`
-
-5. **개발 시작!** 🚀
-
-## 🔧 트러블슈팅
+### 빌드 에러
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+npm run build
+```
 
 ### CORS 에러
-- `backend/.env`의 `ALLOWED_ORIGINS`에 프론트엔드 URL 추가
+백엔드 서버의 ALLOWED_ORIGINS에 프론트엔드 URL을 추가하세요.
 
-### 파일 업로드 실패
-- AWS 자격증명 확인
-- S3 버킷 권한 확인
-- 파일 크기 제한 확인 (기본 10MB)
+## � 환경 변수
 
-### 데이터베이스 에러
-- Prisma 마이그레이션 실행: `npx prisma migrate dev`
-- Prisma Client 재생성: `npx prisma generate`
+```env
+VITE_API_BASE_URL=http://43.200.181.143:8001
+```
 
-### 포트 충돌
-- `.env` 파일에서 `PORT` 변경
-- 프론트엔드 `vite.config.ts`에서 포트 변경
+---
 
-## 📝 라이선스
-
-MIT
-
-## 🤝 기여
-
-이슈와 PR을 환영합니다!
-
-## 📧 문의
-
-문제가 있으시면 이슈를 등록해주세요.
+Made with ❤️ for children's creativity

@@ -1,13 +1,20 @@
 @font-face {
   font-family: 'SejongGeulggot';
-  src: url('/SejongGeulggot.ttf') format('truetype');
+  src: url('/fonts/SejongGeulggot.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Cafe24Oneprettynight';
-  src: url('/Cafe24Oneprettynight-v2.0.ttf') format('truetype');
+  src: url('/fonts/Cafe24Oneprettynight-v2.0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OnglipGyeongyeong';
+  src: url('/fonts/온글잎 경영체.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

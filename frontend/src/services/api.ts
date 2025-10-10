@@ -10,7 +10,7 @@ class ApiClient {
   constructor(baseURL: string) {
     this.client = axios.create({
       baseURL,
-      timeout: 30000,
+      timeout: 180000, // 3분으로 증가 (이미지 생성 시간 고려)
       headers: {
         'Content-Type': 'application/json',
       },

@@ -242,7 +242,7 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario, stageTitle }: Sk
               
               {/* 대화 텍스트 */}
               <p 
-                className="text-base sm:text-lg text-white leading-relaxed text-center whitespace-pre-line font-bold drop-shadow-lg"
+                className="text-xl sm:text-2xl text-white leading-relaxed text-center whitespace-pre-line font-bold drop-shadow-lg"
                 style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}
               >
                 {scenario}

@@ -1,5 +1,32 @@
 import apiClient from './api';
 
+export interface GenerateFairyTaleRequest {
+  session_id: string;
+  chapter_name: string;
+  user_image: string; // base64 encoded image
+}
+
+export interface GenerateFairyTaleResponse {
+  success: boolean;
+  session_id: string;
+  chapter_name: string;
+  result_image: string; // base64 encoded image
+  generation_time: number;
+  total_images: number;
+}
+
+export interface ReportResponse {
+  session_id: string;
+  chapters: Array<{
+    chapter_name: string;
+    user_image: string;
+    result_image: string;
+    description: string;
+  }>;
+  summary: string;
+  created_at: string;
+}
+
 export interface ProcessDrawingRequest {
   image: string; // base64 encoded image
   scenario: string;
@@ -21,6 +48,75 @@ export interface Scenario {
   text: string;
   category: string;
 }
+
+/**
+ * 동화 이미지 생성 API 호출
+ */
+export const generateFairyTale = async (
+  request: GenerateFairyTaleRequest
+): Promise<GenerateFairyTaleResponse> => {
+  try {
+    const response = await apiClient.post<GenerateFairyTaleResponse>(
+      '/api/generate-fairy-tale',
+      request
+    );
+    return response; // apiClient.post가 이미 response.data를 리턴함
+  } catch (error) {
+    console.error('Error generating fairy tale:', error);
+    throw error;
+  }
+};
+
+/**
+ * 세션 리포트 조회
+ */
+export const getReport = async (sessionId: string): Promise<ReportResponse> => {
+  try {
+    const response = await apiClient.get<ReportResponse>(
+      `/api/report/${sessionId}`
+    );
+    return response; // apiClient.get이 이미 response.data를 리턴함
+  } catch (error) {
+    console.error('Error fetching report:', error);
+    throw error;
+  }
+};
+
+/**
+ * 세션의 모든 이미지 조회
+ */
+export const getSessionImages = async (sessionId: string): Promise<string[]> => {
+  try {
+    const response = await apiClient.get<string[]>(
+      `/api/session/${sessionId}/images`
+    );
+    return response; // apiClient.get이 이미 response.data를 리턴함
+  } catch (error) {
+    console.error('Error fetching session images:', error);
+    throw error;
+  }
+};
+
+/**
+ * 세션의 모든 이미지를 합쳐서 최종 이미지 생성
+ */
+export const generateSessionAggregate = async (
+  sessionId: string
+): Promise<GenerateFairyTaleResponse> => {
+  try {
+    const response = await apiClient.post<GenerateFairyTaleResponse>(
+      '/api/generate-fairy-tale/session-aggregate',
+      {
+        session_id: sessionId,
+        chapter_name: 'aggregate_final',
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error('Error generating session aggregate:', error);
+    throw error;
+  }
+};
 
 /**
  * 그림을 백엔드로 전송하고 AI 처리 결과를 받아옵니다
@@ -54,7 +150,7 @@ export const processDrawing = async (
       }
     );
 
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error processing drawing:', error);
     throw error;
@@ -67,7 +163,7 @@ export const processDrawing = async (
 export const getRandomScenario = async (): Promise<Scenario> => {
   try {
     const response = await apiClient.get<Scenario>('/api/scenarios/random');
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error fetching scenario:', error);
     throw error;
@@ -80,7 +176,7 @@ export const getRandomScenario = async (): Promise<Scenario> => {
 export const getAllScenarios = async (): Promise<Scenario[]> => {
   try {
     const response = await apiClient.get<Scenario[]>('/api/scenarios');
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error fetching scenarios:', error);
     throw error;
@@ -99,11 +195,11 @@ export const saveDrawing = async (
   }
 ): Promise<{ id: string; url: string }> => {
   try {
-    const response = await apiClient.post('/api/drawings/save', {
+    const response = await apiClient.post<{ id: string; url: string }>('/api/drawings/save', {
       image: imageData,
       ...metadata,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Error saving drawing:', error);
     throw error;
@@ -115,8 +211,8 @@ export const saveDrawing = async (
  */
 export const getSavedDrawings = async (): Promise<any[]> => {
   try {
-    const response = await apiClient.get('/api/drawings');
-    return response.data;
+    const response = await apiClient.get<any[]>('/api/drawings');
+    return response;
   } catch (error) {
     console.error('Error fetching saved drawings:', error);
     throw error;
