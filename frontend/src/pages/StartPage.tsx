@@ -9,14 +9,8 @@ export default function StartPage() {
 
   return (
     <div className="relative">
-      {/* 배경 이미지 */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/bg0.webp)',
-          filter: 'brightness(0.7)'
-        }}
-      ></div>
+      {/* 배경색: HomePage의 편지지/화이트 배경을 페이지 전체에 적용 */}
+      <div className="absolute inset-0 bg-white"></div>
 
       {/* 컨텐츠 */}
       <div className="relative z-10 flex items-center justify-center px-4 py-8 min-h-[calc(100vh-9rem)]">
@@ -31,9 +25,16 @@ export default function StartPage() {
             </p>
           </div>
 
-          {/* 프롤로그 텍스트 */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl border-2 border-sketch-brown/30 p-6 sm:p-8">
-            <div className="space-y-4 text-sketch-brown/90 font-bold" style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}>
+          {/* 프롤로그 텍스트 (HomePage와 유사한 편지지 스타일 유지) */}
+          <div className="bg-white rounded-lg shadow-2xl border-2 border-sketch-brown/30 p-6 sm:p-8 relative">
+            {/* 편지지 줄무늬 (HomePage 스타일과 유사) */}
+            <div className="absolute inset-0 pointer-events-none opacity-30">
+              <div className="h-full" style={{
+                backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, rgba(139, 115, 85, 0.15) 31px, rgba(139, 115, 85, 0.15) 32px)',
+              }}></div>
+            </div>
+
+            <div className="relative space-y-4 text-sketch-brown/90 font-bold" style={{ fontFamily: 'Cafe24Oneprettynight, cursive' }}>
               <p className="text-lg sm:text-xl leading-relaxed text-center italic">
                 "감정의 바다는, 네가 그린 선으로 이어진단다."
               </p>
