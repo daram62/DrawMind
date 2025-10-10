@@ -5,19 +5,19 @@
 이 저장소는 "AI가 사용자의 그림을 해석해 동화(스토리)를 생성하는 웹 애플리케이션"의 프론트엔드와 관련 문서를 포함합니다.
 
 라이브 데모 & 시연
-- 사이트(라이브 데모): https://drawmind-omega.vercel.app/
+- 사이트(라이브 데모): https://drawmind-*.vercel.app/
 - 시연 영상(YouTube): [영상 링크 삽입 예정]
 
 프로젝트 한줄 요약
 - Draw-Mind는 사용자가 직접 캔버스에 그린 그림을 AI가 분석해 각 그림에 맞는 짧은 동화(스토리)와 감정 분석 리포트를 생성해주는 사람 중심의 웹서비스입니다. 창작 활동을 통해 자기표현과 감정 인식을 돕는 것을 목표로 합니다.
 
-핵심 기능(간단)
+핵심 기능
 - 캔버스 기반 드로잉 인터페이스
 - 그림 업로드 및 AI 기반 스토리/이미지 생성
 - 단계별 여정(프롤로그 → 5개 스테이지)과 감정 분석 리포트
 - 최종 리포트 PDF 내보내기 및 저장/공유
 
-아키텍처 개요 (간단 흐름)
+아키텍처 개요 
 
 - 프론트엔드 (React + Vite)
 	- 사용자 인터페이스(그리기, 단계 진행, 리포트 보기)
@@ -54,7 +54,7 @@ User (Browser)
 - **Axios** - API 통신
 
 ## 📁 프로젝트 구조
-
+![Architecture Diagram](image.png)
 ```
 frontend/
 ├── src/
@@ -104,7 +104,7 @@ npm run build
 
 ---
 
-## 🚀 기술 스택 (요약)
+## 🚀 기술 스택
 
 - 프론트엔드: React 18 + TypeScript, Vite
 - 스타일: Tailwind CSS
@@ -115,7 +115,7 @@ npm run build
 
 ---
 
-## 📁 저장소 구조 (중요 부분)
+## 📁 저장소 구조
 
 ```
 frontend/
@@ -129,10 +129,9 @@ frontend/
 
 README.md (this file)
 ```
-![Architecture Diagram](image.png)
 ---
 
-## ⚙️ 로컬 개발 (빠른 시작)
+## ⚙️ 로컬 개발
 
 1. 레포 클론 후 프론트엔드 디렉터리로 이동
 
@@ -189,7 +188,7 @@ VITE_API_BASE_URL=http://43.200.181.143:8001
 
 ---
 
-## 🔊 Background music (local setup)
+## 🔊 Background music
 
 This project expects background music files to be placed in the frontend `public/sound` directory. Add the following files (example names):
 
