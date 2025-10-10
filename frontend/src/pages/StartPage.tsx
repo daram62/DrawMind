@@ -13,7 +13,7 @@ export default function StartPage() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(/bg.png)',
+          backgroundImage: 'url(/bg0.webp)',
           filter: 'brightness(0.7)'
         }}
       ></div>

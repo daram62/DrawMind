@@ -174,7 +174,7 @@ export default function EmotionAnalysisPage() {
                       <div className="grid md:grid-cols-2 gap-6 items-start">
                         <div className="flex justify-center">
                           <img
-                            src={chapter.result_image || finalResult.allDrawings[originalIndex] || '/bg.png'}
+                            src={chapter.result_image || finalResult.allDrawings[originalIndex] || '/bg0.webp'}
                             alt={`${chapter.chapter_name} 그림`}
                             className="w-full max-w-xs rounded-lg shadow-sketch border-2 border-sketch-brown/20"
                           />

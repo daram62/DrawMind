@@ -109,7 +109,7 @@ export default function DrawingFlowPage() {
   const getBackgroundImage = () => {
     // bg0 ~ bg5 (6단계)
     // 1단계 → bg0, 2단계 → bg1, ..., 6단계 → bg5
-    return `/bg${currentStage - 1}.png`;
+    return `/bg${currentStage - 1}.webp`;
   };
 
 
@@ -188,7 +188,7 @@ export default function DrawingFlowPage() {
       const stage = STAGES[currentStage - 1];
       setResult({
         originalImage: imageData,
-        aiImage: '/bg.png',
+        aiImage: '/bg0.webp',
         story: stage.feedback,
         currentStage: currentStage,
       });
@@ -233,7 +233,7 @@ export default function DrawingFlowPage() {
         alert(`최종 결과 생성 실패: ${error.message}`);
         // 에러 발생 시 마지막 이미지 사용
         setFinalResult({
-          finalImage: result?.aiImage || '/bg.png',
+          finalImage: result?.aiImage || '/bg0.webp',
           storySummary: '당신은 빛을 잃은 바다에서 시작해, 여섯 개의 섬을 건너며 자신을 다시 발견했습니다.\n\n배를 타고 시작된 여정은 둥지를 지나 불의 섬을 건너고, 다리를 세우고, 비를 맞으며, 마침내 소중한 사람들과 함께 별의 정원에 도착했습니다.\n\n이 모든 여정은 당신 마음속 감정의 항해였습니다.',
           emotionAnalysis: '',
         });
@@ -279,16 +279,16 @@ export default function DrawingFlowPage() {
                 <img
                   src={
                     currentStage === 1
-                      ? '/1-1.png'
+                      ? '/1-1.webp'
                       : currentStage === 2
-                        ? '/2-1.png'
+                        ? '/2-1.webp'
                         : currentStage === 3
-                          ? '/3-1.png'
+                          ? '/3-1.webp'
                           : currentStage === 4
-                            ? '/4-1.png'
+                            ? '/4-1.webp'
                             : currentStage === 5
-                              ? '/5-1.png'
-                              : '/6-1.png'
+                              ? '/5-1.webp'
+                              : '/6-1.webp'
                   }
                   alt="Island"
                   className="max-w-xl w-full h-auto object-contain max-h-[50vh]"
@@ -376,7 +376,7 @@ export default function DrawingFlowPage() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url(/step/${currentStage === 6 && result ? '7' : currentStage}.png)`,
+              backgroundImage: `url(/step/${currentStage === 6 && result ? '7' : currentStage}.webp)`,
               filter: 'brightness(0.6)'
             }}
           ></div>
@@ -413,7 +413,7 @@ export default function DrawingFlowPage() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/bg1.png)',
+              backgroundImage: 'url(/bg1.webp)',
               filter: 'brightness(0.6)'
             }}
           ></div>
