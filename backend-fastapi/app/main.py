@@ -3,6 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 
+# Import routers
+try:
+    from app.routers import drawings
+    DRAWINGS_ROUTER_AVAILABLE = True
+except ImportError:
+    DRAWINGS_ROUTER_AVAILABLE = False
+
 load_dotenv()
 
 app = FastAPI(
@@ -21,6 +28,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+if DRAWINGS_ROUTER_AVAILABLE:
+    app.include_router(drawings.router)
 
 @app.get("/")
 async def root():

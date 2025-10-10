@@ -1,6 +1,6 @@
 # Hackathon Infrastructure
 
-AI 해커톤을 위한 사전 구축된 풀스택 인프라입니다. React + Express + AWS S3 + Prisma를 기반으로 빠르게 프로젝트를 시작할 수 있습니다.
+AI 해커톤을 위한 사전 구축된 인프라입니다. React 프론트엔드 + FastAPI 백엔드 + AWS 배포 환경이 준비되어 있습니다.
 
 ## 🚀 주요 기능
 
@@ -12,25 +12,15 @@ AI 해커톤을 위한 사전 구축된 풀스택 인프라입니다. React + Ex
 - 🔄 **React Router** - SPA 라우팅
 
 ### 백엔드
-- 🚂 **Express + TypeScript** - 타입 안전한 API 서버
-- 📦 **Prisma ORM** - SQLite/PostgreSQL 지원
-- ☁️ **AWS S3 통합** - 파일 저장 및 관리
-- 🖼️ **Sharp** - 서버 사이드 이미지 최적화
-- 🤖 **범용 AI API 구조** - OpenAI, Claude, Gemini 지원
-- 🔒 **보안** - CORS, Rate Limiting, 에러 핸들링
+- 🐍 **FastAPI + Python** - 빠르고 현대적인 API 프레임워크
+- 📚 **자동 API 문서** - Swagger UI 자동 생성
 - 🐳 **Docker** - 컨테이너화된 배포
+- ☁️ **AWS EC2** - 프로덕션 배포 완료
 
-### API 엔드포인트
-- `POST /api/projects` - 프로젝트 생성
-- `GET /api/projects` - 프로젝트 목록
-- `GET /api/projects/:id` - 프로젝트 상세
-- `PUT /api/projects/:id` - 프로젝트 수정
-- `DELETE /api/projects/:id` - 프로젝트 삭제
-- `POST /api/files/upload` - 파일 업로드 (S3)
-- `GET /api/files/:id` - 파일 조회
-- `DELETE /api/files/:id` - 파일 삭제
-- `POST /api/upload` - 이미지 업로드 및 처리
-- `GET /health` - 헬스 체크
+### 배포된 API
+- **API URL**: http://13.125.237.117:8000
+- **API 문서**: http://13.125.237.117:8000/docs
+- **Health Check**: http://13.125.237.117:8000/health
 
 ## 📋 기술 스택
 
@@ -43,27 +33,22 @@ AI 해커톤을 위한 사전 구축된 풀스택 인프라입니다. React + Ex
 - Axios
 
 **Backend:**
-- Node.js
-- Express
-- TypeScript
-- Prisma
-- SQLite (개발) / PostgreSQL (프로덕션)
-- AWS SDK v3
-- Sharp
-- Multer
+- Python 3.11
+- FastAPI
+- Uvicorn
+- Pydantic
 
 **Infrastructure:**
-- Docker & Docker Compose
+- Docker
+- AWS EC2
 - AWS S3
-- AWS CloudFront (선택)
-- AWS EC2 (선택)
 
 ## 🛠️ 로컬 개발 환경 설정
 
 ### 사전 요구사항
-- Node.js 18+
-- npm 또는 yarn
-- Docker & Docker Compose (선택)
+- Node.js 18+ (프론트엔드)
+- Python 3.11+ (백엔드)
+- Docker (선택)
 
 ### 1. 저장소 클론
 \`\`\`bash
@@ -71,50 +56,31 @@ git clone <repository-url>
 cd hackathon-infrastructure
 \`\`\`
 
-### 2. 환경 변수 설정
+### 2. 프론트엔드 실행
 
-**백엔드 (.env)**
-\`\`\`bash
-cd backend
-cp .env.example .env
-# .env 파일을 편집하여 필요한 값 입력
-\`\`\`
-
-**프론트엔드 (.env)**
-\`\`\`bash
-cd frontend
-cp .env.example .env
-# VITE_API_URL을 백엔드 URL로 설정
-\`\`\`
-
-### 3. 의존성 설치 및 실행
-
-**백엔드**
-\`\`\`bash
-cd backend
-npm install
-npx prisma generate
-npx prisma migrate dev
-npm run dev
-\`\`\`
-
-**프론트엔드**
 \`\`\`bash
 cd frontend
 npm install
 npm run dev
 \`\`\`
 
-### 4. 접속
-- 프론트엔드: http://localhost:5173
-- 백엔드 API: http://localhost:3000
-- Health Check: http://localhost:3000/health
+접속: http://localhost:5173
 
-## 🐳 Docker로 실행
+### 3. 백엔드 실행 (Docker 추천)
 
 \`\`\`bash
-docker-compose up -d
+cd backend-fastapi
+docker build -t hackathon-api .
+docker run -p 8000:8000 hackathon-api
 \`\`\`
+
+접속: http://localhost:8000/docs
+
+## 🚀 배포된 서버
+
+- **API**: http://13.125.237.117:8000
+- **문서**: http://13.125.237.117:8000/docs
+- **상세 가이드**: `BACKEND_HANDOFF.md` 참고
 
 ## 📁 프로젝트 구조
 

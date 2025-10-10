@@ -3,19 +3,19 @@
 ## 📍 배포된 서버 정보
 
 ### API 서버
-- **URL**: http://13.125.237.117:8000
-- **API 문서**: http://13.125.237.117:8000/docs (Swagger UI)
-- **Health Check**: http://13.125.237.117:8000/health
+- **URL**: http://43.200.181.143:8000
+- **API 문서**: http://43.200.181.143:8000/docs (Swagger UI)
+- **Health Check**: http://43.200.181.143:8000/health
 
 ### EC2 인스턴스
-- **Instance ID**: i-04c2f78b36aa72319
-- **Public IP**: 13.125.237.117
+- **Instance ID**: (새 인스턴스)
+- **Public IP**: 43.200.181.143
 - **Region**: ap-northeast-2 (서울)
-- **Instance Type**: t3.micro
+- **Instance Type**: t3.small
 
 ### SSH 접속
 ```bash
-ssh -i ~/.ssh/hackathon-key.pem ubuntu@13.125.237.117
+ssh -i ~/.ssh/hackathon-key.pem ubuntu@43.200.181.143
 ```
 
 **SSH 키 파일**: `~/.ssh/hackathon-key.pem` (전달 필요)
@@ -121,10 +121,10 @@ docker buildx build --platform linux/amd64 -t hackathon-api:simple .
 docker save hackathon-api:simple | gzip > hackathon-api.tar.gz
 
 # 3. EC2로 전송
-scp -i ~/.ssh/hackathon-key.pem hackathon-api.tar.gz ubuntu@13.125.237.117:~/
+scp -i ~/.ssh/hackathon-key.pem hackathon-api.tar.gz ubuntu@43.200.181.143:~/
 
 # 4. EC2에 SSH 접속
-ssh -i ~/.ssh/hackathon-key.pem ubuntu@13.125.237.117
+ssh -i ~/.ssh/hackathon-key.pem ubuntu@43.200.181.143
 
 # 5. EC2에서 실행
 docker stop api && docker rm api
@@ -162,10 +162,10 @@ docker rm api
 
 ```bash
 # API 테스트
-curl http://13.125.237.117:8000/health
+curl http://43.200.181.143:8000/health
 
 # Swagger UI에서 테스트
-# http://13.125.237.117:8000/docs
+# http://43.200.181.143:8000/docs
 ```
 
 ---
@@ -221,7 +221,7 @@ aws ec2 describe-instances --instance-ids i-04c2f78b36aa72319 --region ap-northe
 ## 📚 참고 문서
 
 - **FastAPI 공식 문서**: https://fastapi.tiangolo.com/
-- **Swagger UI**: http://13.125.237.117:8000/docs
+- **Swagger UI**: http://43.200.181.143:8000/docs
 - **AI_DEVELOPER_GUIDE.md**: 상세 개발 가이드
 - **backend-fastapi/README.md**: 로컬 개발 가이드
 
