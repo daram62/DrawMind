@@ -348,7 +348,7 @@ export default function DrawingFlowPage() {
       )}
 
       {step === 'drawing' && (
-        <div className="fixed inset-0 z-50">
+        <div className="relative min-h-screen z-50">
           {/* 배경 이미지 + 따뜻한 남색 오버레이 */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -359,8 +359,8 @@ export default function DrawingFlowPage() {
           ></div>
           <div className="absolute inset-0 bg-gradient-to-b from-blue-900/30 via-indigo-900/20 to-blue-900/30"></div>
 
-          {/* 컨텐츠 */}
-          <div className="relative z-10 h-full flex flex-col items-center justify-center p-4">
+          {/* 컨텐츠: 스크롤 허용 */}
+          <div className="relative z-10 min-h-screen flex flex-col items-center justify-start p-6 overflow-y-auto">
             <SketchbookCanvas
               scenario={scenario}
               stageTitle={STAGES[currentStage - 1].title}

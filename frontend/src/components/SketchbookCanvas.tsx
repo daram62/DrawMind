@@ -152,10 +152,10 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario, stageTitle }: Sk
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
                     onMouseLeave={stopDrawing}
-                    onTouchStart={startDrawing}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDrawing}
-                    className="w-full h-full border-2 border-dashed border-gray-300 rounded touch-none"
+                    onTouchStart={(e) => { if (e.touches.length === 1) startDrawing(e); }}
+                    onTouchMove={(e) => { if (e.touches.length === 1) draw(e); }}
+                    onTouchEnd={(e) => { if (e.touches.length === 0) stopDrawing(); }}
+                    className="w-full h-full border-2 border-dashed border-gray-300 rounded"
                     style={{
                       background: '#fffef9',
                       boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.05)',
