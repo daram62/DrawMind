@@ -1,10 +1,48 @@
 # 🎨 Draw-Mind (SKKU-AI Hackathon)
 
-이 프로젝트는 성균관대학교 컴퓨터교육학과와 글로벌융합학부가 공동 주관한 "제5회 SKKU AI Hackathon"의 '사람 중심의 인공지능 서비스 개발 (Human-centered AI)' 주제로 만들어진 서비스입니다.
+이 프로젝트는 "제5회 SKKU AI Hackathon"의 '사람 중심의 인공지능 서비스 개발 (Human-centered AI)' 주제로 만들어진 서비스입니다.
 
 이 저장소는 "AI가 사용자의 그림을 해석해 동화(스토리)를 생성하는 웹 애플리케이션"의 프론트엔드와 관련 문서를 포함합니다.
 
-아이들이 그린 그림을 AI가 분석하고 동화로 만들어주는 웹 애플리케이션입니다.
+라이브 데모 & 시연
+- 사이트(라이브 데모): https://drawmind-omega.vercel.app/
+- 시연 영상(YouTube): [영상 링크 삽입 예정]
+
+프로젝트 한줄 요약
+- Draw-Mind는 사용자가 직접 캔버스에 그린 그림을 AI가 분석해 각 그림에 맞는 짧은 동화(스토리)와 감정 분석 리포트를 생성해주는 사람 중심의 웹서비스입니다. 창작 활동을 통해 자기표현과 감정 인식을 돕는 것을 목표로 합니다.
+
+핵심 기능(간단)
+- 캔버스 기반 드로잉 인터페이스
+- 그림 업로드 및 AI 기반 스토리/이미지 생성
+- 단계별 여정(프롤로그 → 5개 스테이지)과 감정 분석 리포트
+- 최종 리포트 PDF 내보내기 및 저장/공유
+
+아키텍처 개요 (간단 흐름)
+
+- 프론트엔드 (React + Vite)
+	- 사용자 인터페이스(그리기, 단계 진행, 리포트 보기)
+	- `SketchbookCanvas` 컴포넌트에서 그림을 캡처해 base64로 백엔드 전송
+	- `audioService` 등 클라이언트 UX 보조 기능
+
+- 백엔드 (별도 서비스)
+	- 그림(base64) 수신 → AI 모델(또는 외부 API) 호출 → 결과(합성 이미지, 설명) 반환
+	- 세션 기반 처리(session_id)로 다단계 그림을 연결하고 최종 합성 이미지/리포트 생성
+
+- 스토리지 / CDN
+	- 생성된 이미지와 정적 자원을 호스팅(배포 환경에서는 CORS 설정 주의)
+
+- 배포
+	- 프론트엔드: Vercel (프로덕션 URL 위에 표기된 도메인)
+	- 백엔드: 별도 서버(예: AWS, GCP, Azure 등) - API 엔드포인트를 `VITE_API_BASE_URL`로 설정
+
+간단한 흐름 다이어그램
+
+User (Browser)
+	→ Draw on Canvas (frontend)
+	→ POST base64 image → Backend AI process
+	→ Backend returns AI image + description
+	→ Frontend shows result → User can export PDF / proceed next stage
+
 
 ## 🚀 기술 스택
 
@@ -91,7 +129,7 @@ frontend/
 
 README.md (this file)
 ```
-
+![Architecture Diagram](image.png)
 ---
 
 ## ⚙️ 로컬 개발 (빠른 시작)
@@ -175,24 +213,10 @@ The frontend audio service (`src/services/audioService.ts`) will load `/sound/<n
 - 최종 이미지 합성 및 감정 분석 결과 확인
 
 ---
-
-## 📋 기여 가이드
-
-1. 포크 후 브랜치 생성: `feature/<이름>`
-2. 변경 사항 커밋
-3. PR 생성 및 리뷰 요청
-
----
-
-## 문제 및 주의사항
-
-- 개발 중 `npm install` 후 보안 경고(audit)나 deprecated 경고가 뜰 수 있습니다. 실행에는 대개 영향이 없지만, 장기적으로 의존성 업데이트가 필요합니다.
-- 모바일 터치에서 캔버스와 페이지 스크롤 충돌 문제가 있을 수 있어, 터치 이벤트 처리 로직을 일부 보완했습니다. 필요하면 더 엄격한 touch-action 정책을 적용할 수 있습니다.
-
----
 ## 연락 및 주최
 
-이 프로젝트는 제5회 SKKU AI 해커톤(2025) 참가작이며, 성균관대학교 컴퓨터교육학과와 글로벌융합학부가 공동 주최하였습니다.
+이 프로젝트는 제5회 SKKU AI 해커톤(2025) 참가작이며, 
+성균관대학교 컴퓨터교육학과와 글로벌융합학부가 공동 주최하였습니다.
 
 프로젝트 관련 문의는 저장소 이슈를 이용해 주세요.
 
