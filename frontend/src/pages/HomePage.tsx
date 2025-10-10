@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { playTrack } from '../services/audioService';
 
 function HomePage() {
+  useEffect(() => {
+    // Play intro music when landing on home
+    playTrack(1, { loop: true, volume: 0.5 });
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-6 md:py-10 max-w-3xl">
       {/* 메인 타이틀 */}
       <div className="text-center mb-8 md:mb-10">
         <h1 className="font-sketch text-3xl sm:text-4xl md:text-5xl text-sketch-brown mb-3">
-          나만의 이야기를 그려보세요
+          마음 속 이야기를 그려볼까요?
         </h1>
       </div>
 
-      {/* 편지지 스타일 설명 */}
-      <div className="bg-white rounded-lg shadow-sketch border-2 border-sketch-brown/20 p-6 sm:p-8 mb-8 relative">
+  {/* 편지지 스타일 설명 */}
+  <div className="bg-white rounded-lg shadow-sketch border-2 border-sketch-brown/20 p-6 sm:p-8 mb-8 relative">
         {/* 편지지 줄무늬 */}
         <div className="absolute inset-0 pointer-events-none opacity-30">
           <div className="h-full" style={{
@@ -52,7 +59,7 @@ function HomePage() {
       {/* CTA 버튼 */}
       <div className="text-center">
         <Link to="/start">
-          <button className="sketch-button text-base sm:text-lg px-10 py-3">
+          <button className="sketch-button text-base sm:text-lg px-10 py-0">
             시작하기
           </button>
         </Link>

@@ -31,6 +31,33 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario, stageTitle }: Sk
     return () => window.removeEventListener('resize', updateCanvasSize);
   }, []);
 
+  // Prevent page scroll while drawing: add/remove native listeners when drawing starts/stops
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (isDrawing) {
+        e.preventDefault();
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      // allow multi-touch gestures (pinch) to pass through
+      if (isDrawing && e.touches && e.touches.length === 1) {
+        e.preventDefault();
+      }
+    };
+
+    if (isDrawing) {
+      // use non-passive to allow preventDefault
+      window.addEventListener('wheel', onWheel, { passive: false });
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+    }
+
+    return () => {
+      window.removeEventListener('wheel', onWheel as any);
+      window.removeEventListener('touchmove', onTouchMove as any);
+    };
+  }, [isDrawing]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -158,6 +185,7 @@ export const SketchbookCanvas = ({ onDrawingComplete, scenario, stageTitle }: Sk
                     className="w-full h-full border-2 border-dashed border-gray-300 rounded"
                     style={{
                       background: '#fffef9',
+                      touchAction: tool === 'pen' ? 'none' : 'auto',
                       boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.05)',
                       cursor: tool === 'pen' ? "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><text y=\"20\" font-size=\"20\">✏️</text></svg>') 2 20, auto" : "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><text y=\"20\" font-size=\"20\">🧹</text></svg>') 12 12, auto"
                     }}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SketchbookCanvas } from '../components/SketchbookCanvas';
 import { generateFairyTale, getReport, generateSessionAggregate } from '../services/drawingService';
@@ -104,6 +104,25 @@ export default function DrawingFlowPage() {
   const [finalResult, setFinalResult] = useState<FinalResultData | null>(null);
   const [allDrawings, setAllDrawings] = useState<string[]>([]); // 5개 그림 저장
   const [sessionId, setSessionId] = useState<string>(''); // 백엔드에서 생성된 session_id 저장
+
+  useEffect(() => {
+    // Map stage to track: stages 1..6 -> tracks 1..6, otherwise track 7
+    const playForCurrent = () => {
+      try {
+        if (step === 'processing' || step === 'finalResult') {
+          // play closing music
+          import('../services/audioService').then(mod => mod.playTrack(7, { loop: true, volume: 0.6 }));
+        } else if (currentStage >= 1 && currentStage <= 6) {
+          const track = currentStage; // 1..6
+          import('../services/audioService').then(mod => mod.playTrack(track, { loop: true, volume: 0.55 }));
+        } else {
+          import('../services/audioService').then(mod => mod.playTrack(7, { loop: true, volume: 0.6 }));
+        }
+      } catch (e) { }
+    };
+
+    playForCurrent();
+  }, [step, currentStage]);
 
   // 현재 단계에 맞는 배경 이미지 반환
   const getBackgroundImage = () => {

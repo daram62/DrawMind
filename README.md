@@ -151,6 +151,22 @@ VITE_API_BASE_URL=http://43.200.181.143:8001
 
 ---
 
+## 🔊 Background music (local setup)
+
+This project expects background music files to be placed in the frontend `public/sound` directory. Add the following files (example names):
+
+- `frontend/public/sound/1.mp3` — Home / Start / Prologue
+- `frontend/public/sound/2.mp3` — First story
+- `frontend/public/sound/3.mp3` — Second story
+- `frontend/public/sound/4.mp3` — Third story
+- `frontend/public/sound/5.mp3` — Fourth story
+- `frontend/public/sound/6.mp3` — Fifth story
+- `frontend/public/sound/7.mp3` — Closing / remaining stages
+
+The frontend audio service (`src/services/audioService.ts`) will load `/sound/<n>.mp3` paths at runtime.
+
+---
+
 ## ✅ 주요 기능
 
 - HTML5 Canvas 기반 드로잉 인터페이스 (SketchbookCanvas)

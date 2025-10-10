@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { playTrack } from '../services/audioService';
 
 export default function StartPage() {
   const navigate = useNavigate();
@@ -7,10 +9,15 @@ export default function StartPage() {
     navigate('/draw');
   };
 
+  useEffect(() => {
+    // Play track 1 for initial flow
+    playTrack(1, { loop: true, volume: 0.5 });
+  }, []);
+
   return (
     <div className="relative">
-      {/* 배경색: HomePage의 편지지/화이트 배경을 페이지 전체에 적용 */}
-      <div className="absolute inset-0 bg-white"></div>
+      {/* 배경색: HomePage의 종이 질감 색상(#fffef9)으로 변경하여 색감을 일치시킴 */}
+      <div className="absolute inset-0 paper-bg"></div>
 
       {/* 컨텐츠 */}
       <div className="relative z-10 flex items-center justify-center px-4 py-8 min-h-[calc(100vh-9rem)]">
