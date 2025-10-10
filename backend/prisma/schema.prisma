@@ -1,0 +1,62 @@
+// Prisma Schema for Hackathon Infrastructure
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model - for basic user management
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+  files     File[]
+}
+
+// Project model - generic project/item container
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      String   @default("active") // active, archived, deleted
+  metadata    String?  // JSON string for flexible data storage
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  files       File[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+// File model - track uploaded files
+model File {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String
+  s3Key       String   @unique
+  s3Url       String
+  contentType String
+  size        Int
+  width       Int?
+  height      Int?
+  metadata    String?  // JSON string for additional metadata
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([s3Key])
+}
