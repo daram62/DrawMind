@@ -5,7 +5,6 @@
 이 저장소는 "AI가 사용자의 그림을 해석해 동화(스토리)를 생성하는 웹 애플리케이션"의 프론트엔드와 관련 문서를 포함합니다.
 
 라이브 데모 & 시연
-- 사이트(라이브 데모): https://drawmind-*.vercel.app/
 - 시연 영상(YouTube): https://youtu.be/0UD_bNDpvCU
 
 프로젝트 한줄 요약
